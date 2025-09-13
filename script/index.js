@@ -1,7 +1,25 @@
+// for display synonyms
+const createElements = (arr) =>{
+    const htmlElements = arr.map((el) => `<span class="btn">${el}</span>`);
+    return(htmlElements.join(""));
+};
+// loading part
+const  manageSpinner = (status) =>{
+    if(status == true){
+        document.getElementById("spinner").classList.remove("hidden");
+        document.getElementById("word-container").classList.add("hidden");
+    }
+    else{
+        document.getElementById("word-container").classList.remove("hidden");
+        document.getElementById("spinner").classList.add("hidden");
+    }
+};
+
+
 const loadLessons = () =>{
     fetch("https://openapi.programming-hero.com/api/levels/all") //promise of response
     .then((res) => res.json()) //promise of json data
-    .then(json => displayLesson(json.data));
+    .then((json) => displayLesson(json.data));
 };
 
 const removeActive = () =>{
@@ -10,7 +28,9 @@ const removeActive = () =>{
     lessonButtons.forEach(btn => btn.classList.remove("active"));
 }
 
+
 const loadLevelWord = (id) => {
+    manageSpinner(true); //for loading
     const url =`https://openapi.programming-hero.com/api/level/${id}`;
     fetch(url)
     .then((res) => res.json())
@@ -21,8 +41,62 @@ const loadLevelWord = (id) => {
       displayLevelWord(data.data)
     });
 };
+// {
+//     "word": "Linger",
+//     "meaning": "থেমে থাকা / বিলম্ব করা",
+//     "pronunciation": "লিঙ্গার",
+//     "level": 2,
+//     "sentence": "She lingered at the door, unwilling to leave.",
+//     "points": 2,
+//     "partsOfSpeech": "verb",
+//     "synonyms": [
+//         "stay",
+//         "remain",
+//         "delay"
+//     ],
+//     "id": 12
+// }
 
-const displayLevelWord =(words)=>{
+// for modal
+// data load
+const loadWordDetail = async(id) =>{
+    const url = `https://openapi.programming-hero.com/api/word/${id}`;
+    const res = await fetch(url);
+    const details = await res.json();
+    displayWordDetails(details.data);
+};
+
+// modal data display
+const displayWordDetails = (word) => {
+    console.log(word);
+    const detailsBox = document.getElementById("details-container");
+    detailsBox.innerHTML = `
+          <div class="">
+            <h2 class="text-2xl font-bold">${word.word}(<i class="fa-solid fa-microphone-lines"></i>:${word.pronunciation})</h2>
+          </div>
+          <div class="">
+            <h2 class=" font-bold">Meaning</h2>
+            <p>${word.meaning}</p>
+          </div>
+          <div class="">
+            <h2 class=" font-bold">Example</h2>
+            <p>${word.sentence}</p>
+          </div>
+          <div class="">
+            <h2 class=" font-bold">Synonym</h2>
+            <div class="">${createElement(word.synonyms)}</div>
+          </div>
+           <div class="modal-action">
+             <form method="dialog">
+               <!-- if there is a button in form, it will close the modal -->
+               <button class="btn">Close</button>
+             </form>
+           </div>
+    `;
+    document.getElementById("word_modal").showModal();
+}
+
+const displayLevelWord =(words) =>{
    const wordContainer = document.getElementById("word-container");
    wordContainer.innerHTML ="";
    if(words.length == 0){
@@ -33,6 +107,7 @@ const displayLevelWord =(words)=>{
         <h2 class="font-bold text-4xl">নেক্সট Lesson এ যান</h2>
        </div>
     `;
+    manageSpinner(false); //for loading part
     return;
    }
 
@@ -44,8 +119,7 @@ const displayLevelWord =(words)=>{
 //     "pronunciation": "কার"
 // }
 
-   words.forEach(word => {
-    console.log(word);
+   words.forEach((word) => {
     const card = document.createElement("div");
     card.innerHTML = `
         <div class="bg-white rounded-xl shadow-sm text-center py-14 px-5 space-y-4">
@@ -53,14 +127,16 @@ const displayLevelWord =(words)=>{
             <p class="font-semibold">Meaning / Pronounciation</p>
             <div class="text-1xl font-medium font-bangla">"${word.meaning ? word.meaning : "অর্থ পাওয়া যায় নি"}/${word.pronunciation ? word.pronunciation : "উচ্চারণ পাওয়া যায় নি"}</div>
             <div class="flex justify-between items-center">
-                <button onclick="my_modal_1.showModal()" class="btn bg-[#1A91FF15] hover:bg-[#1A91FF80]"><i class="fa-solid fa-circle-info"></i></button>
+                <button onclick="loadWordDetail(${word.id})" class="btn bg-[#1A91FF15] hover:bg-[#1A91FF80]"><i class="fa-solid fa-circle-info"></i></button>
                 <button class="btn bg-[#1A91FF15] hover:bg-[#1A91FF80]"><i class="fa-solid fa-volume-high"></i></button>
             </div>
         </div>
     `;
     wordContainer.append(card);
  });
+    manageSpinner(false); //for loading part
 };
+
 
 const displayLesson = (lessons) => {
     //1. get the container & empty
@@ -75,9 +151,30 @@ const displayLesson = (lessons) => {
          <button id="lesson-btn-${lesson.level_no}" onClick ="loadLevelWord(${lesson.level_no})" class="btn btn-outline btn-primary lesson-btn">
          <i class="fa-solid fa-book-open"></i>Lesson - ${lesson.level_no}
          </button>
-    `
+    `;
     //4. append into container
     levelContainer.append(btnDiv);
     }     
-}
+};
+
 loadLessons();
+
+// for search functionality
+document.getElementById("btn-search").addEventListener("click", ()=>{
+    removeActive(); // for search remove
+    const input = document.getElementById("input-search");
+    const searchValue = input.value.trim().toLowerCase();
+    console.log(searchValue);
+
+    fetch("https://openapi.programming-hero.com/api/words/all")
+       .then((res) => res.json())
+       .then((data) => {
+        const allWords = data.data;
+        console.log(allWords);
+        const filterWords = allWords.filter((word) =>
+        word.word.toLowerCase().includes(searchValue)
+      );
+
+      displayLevelWord(filterWords);
+    });
+});

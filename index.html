@@ -79,6 +79,27 @@
         <h2 class="text-4xl font-bold mb-8 text-center"><span class="text-sky-400">Let's</span> Learn Vocabularies</h2>
          <div id="level-container" class="flex gap-5 flex-wrap justify-center"></div>
     </section>
+    
+    <!-- search part -->
+    <section class="flex justify-center mt-10">
+       <div class="join">
+           <div>
+             <label class="input validator join-item">
+               <input id="input-search" type="Text" placeholder="Search Vocabulary Now" required />
+             </label>
+           </div>
+           <button id="btn-search" class="btn btn-primary join-item">Search</button>
+         </div>
+    </section>
+
+     <!-- loading part -->
+      <section id="spinner" class="flex justify-center items-center p-10 hidden">
+         <span class="loading loading-bars loading-x1"></span>
+
+      </section>
+    <section>
+
+    </section>
 
     <section id="word-container" class="bg-gray-100 p-10 mt-10 w-11/12 mx-auto my-10 grid grid-cols-3 gap-5 ">
        <div class="text-center col-span-full rounded-xl py-10 space-y-6 font-bangla">
@@ -89,16 +110,14 @@
 
        <!-- Open the modal using ID.showModal() method -->
        <!-- <button class="btn" onclick="my_modal_1.showModal()">open modal</button> -->
-       <dialog id="my_modal_1" class="modal">
+       <dialog id="word_modal" class="modal">
          <div class="modal-box">
-           <h3 class="text-lg font-bold">Hello!</h3>
-           <p class="py-4">Press ESC key or click the button below to close</p>
-           <div class="modal-action">
-             <form method="dialog">
-               <!-- if there is a button in form, it will close the modal -->
-               <button class="btn">Close</button>
-             </form>
-           </div>
+         <div id="details-container" class="space-y-5"></div>
+          <div class="moda-action"></div>
+          <form method="dialog">
+            <!-- if there is new button in form, it will close the modal -->
+             <!-- <button class="btn">Close</button> -->
+          </form>
          </div>
        </dialog>
     <script src="./script/index.js"></script>
