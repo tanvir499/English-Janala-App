@@ -3,6 +3,14 @@ const createElements = (arr) =>{
     const htmlElements = arr.map((el) => `<span class="btn">${el}</span>`);
     return(htmlElements.join(""));
 };
+// sound functionality
+function pronounceWord(word) {
+  const utterance = new SpeechSynthesisUtterance(word);
+  utterance.lang = "en-EN"; // English
+  window.speechSynthesis.speak(utterance);
+}
+
+
 // loading part
 const  manageSpinner = (status) =>{
     if(status == true){
@@ -128,7 +136,7 @@ const displayLevelWord =(words) =>{
             <div class="text-1xl font-medium font-bangla">"${word.meaning ? word.meaning : "অর্থ পাওয়া যায় নি"}/${word.pronunciation ? word.pronunciation : "উচ্চারণ পাওয়া যায় নি"}</div>
             <div class="flex justify-between items-center">
                 <button onclick="loadWordDetail(${word.id})" class="btn bg-[#1A91FF15] hover:bg-[#1A91FF80]"><i class="fa-solid fa-circle-info"></i></button>
-                <button class="btn bg-[#1A91FF15] hover:bg-[#1A91FF80]"><i class="fa-solid fa-volume-high"></i></button>
+                <button onclick="pronounceWord('${word.word}')" class="btn bg-[#1A91FF15] hover:bg-[#1A91FF80]"><i class="fa-solid fa-volume-high"></i></button>
             </div>
         </div>
     `;
@@ -178,3 +186,29 @@ document.getElementById("btn-search").addEventListener("click", ()=>{
       displayLevelWord(filterWords);
     });
 });
+
+
+//For FAQ
+  // Get all elements with the class 'accordion-item'
+        const accordionItems = document.querySelectorAll('.accordion-item');
+
+        // Loop through each item and add a click event listener
+        accordionItems.forEach(item => {
+            // Use an arrow function for a modern, concise syntax
+            item.addEventListener('click', () => {
+                // The 'toggle' method adds the class if it's not there, and removes it if it is
+                const isActive = item.classList.toggle('active');
+                
+                // Get the icon element inside the current item
+                const icon = item.querySelector('svg');
+
+                // Check if the item is now active and change the icon accordingly
+                if (isActive) {
+                    // Change to a minus icon (representing the open state)
+                    icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />`;
+                } else {
+                    // Change back to a plus icon (representing the closed state)
+                    icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />`;
+                }
+            });
+        });
