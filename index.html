@@ -95,13 +95,12 @@
      <!-- loading part -->
       <section id="spinner" class="flex justify-center items-center p-10 hidden">
          <span class="loading loading-bars loading-x1"></span>
-
       </section>
     <section>
 
     </section>
 
-    <section id="word-container" class="bg-gray-100 p-10 mt-10 w-11/12 mx-auto my-10 grid grid-cols-3 gap-5 ">
+    <section id="word-container" class="bg-gray-100 p-10 mt-10 w-11/12 mx-auto my-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 ">
        <div class="text-center col-span-full rounded-xl py-10 space-y-6 font-bangla">
         <p class="text-xl font-medium text-gray-400">আপনি এখনো কোন Lesson Select করেন ন</p>
         <h2 class="font-bold text-4xl">একটি Lesson Select করুন।</h2>
@@ -113,24 +112,25 @@
        <dialog id="word_modal" class="modal">
          <div class="modal-box">
          <div id="details-container" class="space-y-5"></div>
-          <div class="moda-action"></div>
-          <form method="dialog">
-            <!-- if there is new button in form, it will close the modal -->
-             <!-- <button class="btn">Close</button> -->
-          </form>
+            <div class="modal-action">
+               <form method="dialog">
+                <!-- if there is a button in form, it will close the modal -->
+               <button class="btn">Close</button>
+               </form>
+           </div>
          </div>
        </dialog>
 
        <!-- Faq part -->
           <section class="flex items-center justify-center min-h-screen p-4 sm:p-8">
-               <div class="w-full max-w-4xl">
+               <div class="w-full max-w-4xl ">
         <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-center mb-10 tracking-tight">
             <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-cyan-500">Frequently</span> Asked Questions
         </h1>
 
-        <div id="faq-container" class="space-y-4">
+        <div id="faq-container" class="space-y-4 ">
             <!-- FAQ Item 1 -->
-            <div class="accordion-item bg-white p-6 rounded-2xl shadow-sm border border-gray-200 cursor-pointer transition-all duration-300 hover:shadow-md">
+            <div class="accordion-item bg-white p-6 rounded-2xl shadow-sm border border-gray-200 cursor-pointer transition-all duration-300 hover:shadow-md ">
                 <div class="flex items-center justify-between">
                     <h2 class="text-base sm:text-lg font-medium text-gray-800">
                         1. How can I start learning English on this website?
@@ -141,7 +141,7 @@
                         </svg>
                     </span>
                 </div>
-                <div class="accordion-content text-gray-600 mt-4">
+                <div class="accordion-content text-gray-600 mt-4 ">
                     You can start by exploring our beginner lessons, interactive exercises, and quizzes. We also offer structured courses to guide you step by step.
                 </div>
             </div>
